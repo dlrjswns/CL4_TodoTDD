@@ -25,6 +25,14 @@ class TodoListController:UIViewController{
         return btn
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        print("sdfsadfsafas")
+        self.tbView.reloadData()
+        for a in memoArray{
+            print("title = \(a.title), address = \(a.comment), date = \(a.date)")
+        }
+    }
+    
     //MARK: -Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +45,7 @@ class TodoListController:UIViewController{
     @objc func tapBarButton(){
         print("tapBarButton() Tapped")
         let vc = AddMemoController()
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -46,7 +55,7 @@ class TodoListController:UIViewController{
     }
     
     func setTableView(){
-//        self.tbView.dataSource = self
+        self.tbView.dataSource = self
     }
     
     //MARK: -Configure
@@ -62,12 +71,27 @@ class TodoListController:UIViewController{
 }
 
 //MARK: -UITableViewDataSource
-//extension TodoListController:UITableViewDataSource{
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return memoArray.count
-//    }
-//
-////    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-////        <#code#>
-////    }
-//}
+extension TodoListController:UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return memoArray.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "cell")
+        cell.textLabel?.text = memoArray[indexPath.row].title
+        cell.detailTextLabel?.text = memoArray[indexPath.row].comment
+        return cell
+    }
+}
+
+extension TodoListController:SaveDataDelegate{
+    func saveData(data saveData: Memo) {
+        memoArray.append(saveData)
+        print("saveData() - called")
+        for a in memoArray {
+            print("memoArray - \(a)")
+        }
+    }
+    
+    
+}

@@ -10,9 +10,9 @@ import Foundation
 class Memo{
     let title:String
     let comment:String
-    let date:String
+    let date:Date
     
-    init(title:String, comment:String, date:String) {
+    init(title:String, comment:String, date:Date) {
         self.title = title
         self.comment = comment
         self.date = date

@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol SaveDataDelegate:AnyObject{
+    func saveData(data saveData:Memo)
+}
+
 class AddMemoController:UIViewController{
+    var delegate:SaveDataDelegate?
     //MARK: -UI Component
     private lazy var titleTextFd:UITextField={
         let fd = UITextField()
@@ -81,9 +86,12 @@ class AddMemoController:UIViewController{
     
     //MARK: -Objc
     @objc func tapSaveButton(){
-        let vc = TodoListController()
-        vc.memoArray.append(Memo(title: titleTextFd.text!, comment: addressTextFd.text!, date: datePicker.description))
-        self.navigationController?.popToViewController(vc, animated: true)
+        let title = titleTextFd.text!
+        let address = addressTextFd.text!
+        let date = datePicker.date
+        let data = Memo(title: title, comment: address, date: date)
+        delegate?.saveData(data: data)
+        self.navigationController?.popViewController(animated: true)
         print("dfds")
     }
     
